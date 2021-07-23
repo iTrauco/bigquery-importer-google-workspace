@@ -132,8 +132,7 @@ func (c *JobClient) createTable(ctx context.Context, row tables.Row) (err error)
 	}
 	var errAPI *googleapi.Error
 	if ok := errors.As(err, &errAPI); err != nil && (!ok || errAPI.Code != http.StatusNotFound) {
-		c.Logger.Debug("error",
-			zap.Error(err))
+		c.Logger.Debug("error", zap.Error(err))
 		return err
 	}
 	c.Logger.Info("creating table", zap.Any("fullyQualifiedName", table.FullyQualifiedName()))
