@@ -45,8 +45,9 @@ func (c *WorkspaceClient) ListDomainUsers(ctx context.Context, put func(context.
 		}
 	}()
 	var pageToken string
+	const projection = "full"
 	for {
-		users, err := c.DirectoryService.Users.List().Domain(c.Config.Domain).PageToken(pageToken).Do()
+		users, err := c.DirectoryService.Users.List().Projection(projection).Domain(c.Config.Domain).PageToken(pageToken).Do()
 		if err != nil {
 			return fmt.Errorf("users: %w", err)
 		}
