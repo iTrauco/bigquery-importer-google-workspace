@@ -2,7 +2,6 @@ package tables
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 
 	"cloud.google.com/go/bigquery"
@@ -20,7 +19,7 @@ type UsersRow struct {
 	ChangePasswordAtNextLogin bool               `bigquery:"changePasswordAtNextLogin"`
 	CreationTime              string             `bigquery:"creationTime"`
 	CustomerId                string             `bigquery:"customerId"`
-	CustomSchemas             CustomSchemas      `bigquery:"custom_schema"`
+	CustomSchemas             []CustomSchema     `bigquery:"custom_schemas"`
 	DeletionTime              string             `bigquery:"deletionTime"`
 	Emails                    []UserEmail        `bigquery:"emails"`
 	Etag                      string             `bigquery:"etag"`
@@ -82,14 +81,9 @@ func (a *UserAddress) FieldType() interface{} {
 
 var _ SubField = &UserAddress{}
 
-type CustomSchemas struct {
-	Tech struct {
-		GitHubUsername string `json:"GitHub_Username" bigquery:"github_username"`
-	}
-
-	GitHub struct {
-		Username string `json:"Username" bigquery:"username"`
-	}
+type CustomSchema struct {
+	Key   string `bigquery:"key"`
+	Value string `bigquery:"value"`
 }
 
 type UserExternalId struct {
@@ -219,9 +213,7 @@ func (u *UsersRow) UnmarshalUser(wu *workspace.User) (err error) {
 	u.Archived = wu.Archived
 	u.ChangePasswordAtNextLogin = wu.ChangePasswordAtNextLogin
 	u.CreationTime = wu.CreationTime
-	if err := u.CustomSchemas.UnmarshalCustomSchemas(wu.CustomSchemas); err != nil {
-		return err
-	}
+	u.CustomSchemas = ParseCustomSchemas(wu.CustomSchemas)
 	u.CustomerId = wu.CustomerId
 	u.DeletionTime = wu.DeletionTime
 	emails, err := ParseUserEmails(wu.Emails)
@@ -565,19 +557,13 @@ func ParseUserWebsites(data interface{}) ([]UserWebsite, error) {
 	return list, nil
 }
 
-func (c *CustomSchemas) UnmarshalCustomSchemas(customSchemas map[string]googleapi.RawMessage) error {
-	// The key is the name of the custom schema. It in turn contains a users GitHub username.
-	const gitHubKey = "GitHub"
-	if customSchemaGitHubRaw, ok := customSchemas[gitHubKey]; ok {
-		if err := json.Unmarshal(customSchemaGitHubRaw, &c.GitHub); err != nil {
-			return fmt.Errorf("unmarshal custom schema %s: %w", gitHubKey, err)
-		}
+func ParseCustomSchemas(customSchemas map[string]googleapi.RawMessage) []CustomSchema {
+	schemas := make([]CustomSchema, 0, len(customSchemas))
+	for schema, raw := range customSchemas {
+		schemas = append(schemas, CustomSchema{
+			Key:   schema,
+			Value: string(raw),
+		})
 	}
-	const techKey = "Tech"
-	if customSchemaTechRaw, ok := customSchemas[techKey]; ok {
-		if err := json.Unmarshal(customSchemaTechRaw, &c.Tech); err != nil {
-			return fmt.Errorf("unmarshal custom schema %s: %w", techKey, err)
-		}
-	}
-	return nil
+	return schemas
 }
