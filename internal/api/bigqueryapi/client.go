@@ -27,7 +27,8 @@ func allTableRows() []tables.Row {
 	}
 }
 
-// EnsureTables ensures that all tables exists in an empty state. If a table already exists, and error will be returned.
+// EnsureTables ensures that all tables exists in an empty state.
+// If a table already exists an error will be returned.
 func (c *JobClient) EnsureTables(ctx context.Context) error {
 	c.Logger.Info("ensuring tables")
 	for _, tableRow := range allTableRows() {
@@ -38,6 +39,7 @@ func (c *JobClient) EnsureTables(ctx context.Context) error {
 	return nil
 }
 
+// PutGroups takes a slice of admin.Group and inserts it into BigQuery.
 func (c *JobClient) PutGroups(ctx context.Context, groups ...*workspace.Group) (err error) {
 	defer func() {
 		if err != nil {
@@ -59,6 +61,7 @@ func (c *JobClient) PutGroups(ctx context.Context, groups ...*workspace.Group) (
 	return c.inserter(&tables.GroupsRow{}).Put(ctx, valueSavers)
 }
 
+// PutUsers take a slice of admin.User and inserts it into BigQuery.
 func (c *JobClient) PutUsers(ctx context.Context, users ...*workspace.User) (err error) {
 	defer func() {
 		if err != nil {
@@ -81,6 +84,7 @@ func (c *JobClient) PutUsers(ctx context.Context, users ...*workspace.User) (err
 	return c.inserter(&tables.UsersRow{}).Put(ctx, valueSavers)
 }
 
+// PutGroupMembers takes a slice of admin.Group and admin.Member and inserts the members of the admin.Group into BigQuery
 func (c *JobClient) PutGroupMembers(ctx context.Context, group *workspace.Group, members ...*workspace.Member) (err error) {
 	defer func() {
 		if err != nil {

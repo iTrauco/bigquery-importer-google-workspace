@@ -14,6 +14,7 @@ type WorkspaceClient struct {
 	Config           *Config
 }
 
+// ListDomainGroups fetches all admin.Group in a domain and executes the provided function on them.
 func (c *WorkspaceClient) ListDomainGroups(ctx context.Context, put func(context.Context, ...*workspace.Group) error) (err error) {
 	defer func() {
 		if err != nil {
@@ -38,6 +39,7 @@ func (c *WorkspaceClient) ListDomainGroups(ctx context.Context, put func(context
 	return nil
 }
 
+// ListDomainUsers fetches all admin.User in a domain and executes the provided function on them.
 func (c *WorkspaceClient) ListDomainUsers(ctx context.Context, put func(context.Context, ...*workspace.User) error) (err error) {
 	defer func() {
 		if err != nil {
@@ -63,6 +65,7 @@ func (c *WorkspaceClient) ListDomainUsers(ctx context.Context, put func(context.
 	return nil
 }
 
+// ListGroupMembers fetches all admin.Member for the provided group and execute the provided function on them.
 func (c *WorkspaceClient) ListGroupMembers(ctx context.Context, group *workspace.Group, put func(context.Context, *workspace.Group, ...*workspace.Member) error) (err error) {
 	defer func() {
 		if err != nil {

@@ -11,46 +11,48 @@ import (
 	"google.golang.org/api/googleapi"
 )
 
+// UsersRow follows the structure of the WebAPI. See the official documentation for field descriptions:
+// https://developers.google.com/admin-sdk/directory/reference/rest/v1/users
 type UsersRow struct {
 	Addresses                 []UserAddress      `bigquery:"addresses"`
-	AgreedToTerms             bool               `bigquery:"agreedToTerms"`
+	AgreedToTerms             bool               `bigquery:"agreed_to_terms"`
 	Aliases                   []string           `bigquery:"aliases"`
 	Archived                  bool               `bigquery:"archived"`
-	ChangePasswordAtNextLogin bool               `bigquery:"changePasswordAtNextLogin"`
-	CreationTime              string             `bigquery:"creationTime"`
-	CustomerId                string             `bigquery:"customerId"`
-	CustomSchemas             []CustomSchema     `bigquery:"custom_schemas"`
-	DeletionTime              string             `bigquery:"deletionTime"`
+	ChangePasswordAtNextLogin bool               `bigquery:"change_password_at_next_login"`
+	CreationTime              string             `bigquery:"creation_time"`
+	CustomerId                string             `bigquery:"customer_id"`
+	CustomSchemas             []CustomSchema     `bigquery:"custom_schema"`
+	DeletionTime              string             `bigquery:"deletion_time"`
 	Emails                    []UserEmail        `bigquery:"emails"`
 	Etag                      string             `bigquery:"etag"`
-	ExternalIds               []UserExternalId   `bigquery:"externalIds"`
+	ExternalIds               []UserExternalId   `bigquery:"external_ids"`
 	Gender                    UserGender         `bigquery:"gender"`
 	Id                        string             `bigquery:"id"`
-	IpWhitelisted             bool               `bigquery:"ipWhitelisted"`
-	IsAdmin                   bool               `bigquery:"isAdmin"`
-	IsDelegatedAdmin          bool               `bigquery:"isDelegatedAdmin"`
-	IsEnforcedIn2Sv           bool               `bigquery:"isEnforcedIn2Sv"`
-	IsEnrolledIn2Sv           bool               `bigquery:"isEnrolledIn2Sv"`
-	IsMailboxSetup            bool               `bigquery:"isMailboxSetup"`
+	IpWhitelisted             bool               `bigquery:"ip_whitelisted"`
+	IsAdmin                   bool               `bigquery:"is_admin"`
+	IsDelegatedAdmin          bool               `bigquery:"is_delegated_admin"`
+	IsEnforcedIn2Sv           bool               `bigquery:"is_enforced_in_2sv"`
+	IsEnrolledIn2Sv           bool               `bigquery:"is_enrolled_in_2sv"`
+	IsMailboxSetup            bool               `bigquery:"is_mailbox_setup"`
 	Keywords                  []UserKeyword      `bigquery:"keywords"`
 	Kind                      string             `bigquery:"kind"`
 	Languages                 []UserLanguage     `bigquery:"languages"`
-	LastLoginTime             string             `bigquery:"lastLoginTime"`
+	LastLoginTime             string             `bigquery:"last_login_time"`
 	Locations                 []UserLocation     `bigquery:"locations"`
 	Name                      UserName           `bigquery:"name"`
-	NonEditableAliases        []string           `bigquery:"nonEditableAliases"`
+	NonEditableAliases        []string           `bigquery:"non_editable_aliases"`
 	Notes                     []UserAbout        `bigquery:"notes"`
-	OrgUnitPath               string             `bigquery:"orgUnitPath"`
+	OrgUnitPath               string             `bigquery:"org_unit_path"`
 	Organizations             []UserOrganization `bigquery:"organizations"`
 	Phones                    []UserPhone        `bigquery:"phones"`
-	PrimaryEmail              string             `bigquery:"primaryEmail"`
-	RecoveryEmail             string             `bigquery:"recoveryEmail"`
-	RecoveryPhone             string             `bigquery:"recoveryPhone"`
+	PrimaryEmail              string             `bigquery:"primary_email"`
+	RecoveryEmail             string             `bigquery:"recovery_email"`
+	RecoveryPhone             string             `bigquery:"recovery_phone"`
 	Relations                 []UserRelation     `bigquery:"relations"`
 	Suspended                 bool               `bigquery:"suspended"`
-	SuspensionReason          string             `bigquery:"suspensionReason"`
-	ThumbnailPhotoEtag        string             `bigquery:"thumbnailPhotoEtag"`
-	ThumbnailPhotoUrl         string             `bigquery:"thumbnailPhotoUrl"`
+	SuspensionReason          string             `bigquery:"suspension_reason"`
+	ThumbnailPhotoEtag        string             `bigquery:"thumbnail_photo_etag"`
+	ThumbnailPhotoUrl         string             `bigquery:"thumbnail_photo_url"`
 	Websites                  []UserWebsite      `bigquery:"websites"`
 }
 
@@ -67,7 +69,7 @@ type UserAddress struct {
 	ExtendedAddress string `bigquery:"extended_address"`
 	Formatted       string `bigquery:"formatted"`
 	Locality        string `bigquery:"locality"`
-	PoBox           string `bigquery:"poBox"`
+	PoBox           string `bigquery:"po_box"`
 	PostalCode      string `bigquery:"postal_code"`
 	Primary         bool   `bigquery:"primary"`
 	Region          string `bigquery:"region"`
@@ -168,7 +170,7 @@ type UserRelation struct {
 type UserWebsite struct {
 	CustomType string `json:"customType,omitempty" bigquery:"custom_type"`
 	Primary    bool   `json:"primary,omitempty" bigquery:"primary"`
-	Type       string `json:"type,omitempty" bigquery:"ytpe"`
+	Type       string `json:"type,omitempty" bigquery:"type"`
 	Value      string `json:"value,omitempty" bigquery:"value"`
 }
 
@@ -191,6 +193,8 @@ func (u *UsersRow) Schema() bigquery.Schema {
 
 func (u *UsersRow) TableMetadata() *bigquery.TableMetadata {
 	return &bigquery.TableMetadata{
+		Description: "Users follows the structure of the WebAPI. See the official documentation for field descriptions:" +
+			"https://developers.google.com/admin-sdk/directory/reference/rest/v1/users",
 		Schema: u.Schema(),
 	}
 }

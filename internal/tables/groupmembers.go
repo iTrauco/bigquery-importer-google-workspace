@@ -9,6 +9,8 @@ import (
 	workspace "google.golang.org/api/admin/directory/v1"
 )
 
+// GroupMembersRow follows the structure of the WebAPI. See the official documentation for field descriptions:
+// https://developers.google.com/admin-sdk/directory/reference/rest/v1/members
 type GroupMembersRow struct {
 	Id               string `bigquery:"id"`
 	GroupId          string `bigquery:"group_id"`
@@ -41,6 +43,8 @@ func (g *GroupMembersRow) Schema() bigquery.Schema {
 
 func (g *GroupMembersRow) TableMetadata() *bigquery.TableMetadata {
 	return &bigquery.TableMetadata{
+		Description: "Group Members follows the structure of the WebAPI. See the official documentation for field " +
+			"descriptions: https://developers.google.com/admin-sdk/directory/reference/rest/v1/members",
 		Schema: g.Schema(),
 	}
 }

@@ -9,18 +9,20 @@ import (
 	workspace "google.golang.org/api/admin/directory/v1"
 )
 
+// GroupsRow follows the structure of the WebAPI. See the official documentation for field descriptions:
+// https://developers.google.com/admin-sdk/directory/reference/rest/v1/groups
 type GroupsRow struct {
 	Org                string   `bigquery:"org"`
 	Id                 string   `bigquery:"id"`
 	Email              string   `bigquery:"email"`
 	Name               string   `bigquery:"name"`
 	Description        string   `bigquery:"description"`
-	AdminCreated       bool     `bigquery:"adminCreated"`
-	DirectMembersCount int64    `bigquery:"directMembersCount"`
+	AdminCreated       bool     `bigquery:"admin_created"`
+	DirectMembersCount int64    `bigquery:"direct_members_count"`
 	Kind               string   `bigquery:"kind"`
 	Etag               string   `bigquery:"etag"`
 	Aliases            []string `bigquery:"aliases"`
-	NonEditableAliases []string `bigquery:"nonEditableAliases"`
+	NonEditableAliases []string `bigquery:"non_editable_aliases"`
 }
 
 var _ Row = &GroupsRow{}
@@ -44,6 +46,8 @@ func (g *GroupsRow) Schema() bigquery.Schema {
 
 func (g *GroupsRow) TableMetadata() *bigquery.TableMetadata {
 	return &bigquery.TableMetadata{
+		Description: "Groups follows the structure of the WebAPI. See the official documentation for field " +
+			"descriptions: https://developers.google.com/admin-sdk/directory/reference/rest/v1/groups",
 		Schema: g.Schema(),
 	}
 }

@@ -16,6 +16,7 @@ type App struct {
 	Logger            *zap.Logger
 }
 
+// Run creates new tables and scrapes Google Workspace on Groups, Group Members and Users.
 func (a *App) Run(ctx context.Context) error {
 	a.Logger.Info("running")
 	defer a.Logger.Info("stopped")
