@@ -20,15 +20,15 @@ type UsersRow struct {
 	Archived                  bool               `bigquery:"archived"`
 	ChangePasswordAtNextLogin bool               `bigquery:"change_password_at_next_login"`
 	CreationTime              string             `bigquery:"creation_time"`
-	CustomerId                string             `bigquery:"customer_id"`
+	CustomerID                string             `bigquery:"customer_id"`
 	CustomSchemas             []CustomSchema     `bigquery:"custom_schema"`
 	DeletionTime              string             `bigquery:"deletion_time"`
 	Emails                    []UserEmail        `bigquery:"emails"`
 	Etag                      string             `bigquery:"etag"`
-	ExternalIds               []UserExternalId   `bigquery:"external_ids"`
+	ExternalIDs               []UserExternalID   `bigquery:"external_ids"`
 	Gender                    UserGender         `bigquery:"gender"`
-	Id                        string             `bigquery:"id"`
-	IpWhitelisted             bool               `bigquery:"ip_whitelisted"`
+	ID                        string             `bigquery:"id"`
+	IPWhitelisted             bool               `bigquery:"ip_whitelisted"`
 	IsAdmin                   bool               `bigquery:"is_admin"`
 	IsDelegatedAdmin          bool               `bigquery:"is_delegated_admin"`
 	IsEnforcedIn2Sv           bool               `bigquery:"is_enforced_in_2sv"`
@@ -52,7 +52,7 @@ type UsersRow struct {
 	Suspended                 bool               `bigquery:"suspended"`
 	SuspensionReason          string             `bigquery:"suspension_reason"`
 	ThumbnailPhotoEtag        string             `bigquery:"thumbnail_photo_etag"`
-	ThumbnailPhotoUrl         string             `bigquery:"thumbnail_photo_url"`
+	ThumbnailPhotoURL         string             `bigquery:"thumbnail_photo_url"`
 	Websites                  []UserWebsite      `bigquery:"websites"`
 }
 
@@ -88,7 +88,7 @@ type CustomSchema struct {
 	Value string `bigquery:"value"`
 }
 
-type UserExternalId struct {
+type UserExternalID struct {
 	CustomType string `json:"customType" bigquery:"custom_type"`
 	Type       string `json:"type" bigquery:"type"`
 	Value      string `json:"value" bigquery:"value"`
@@ -113,7 +113,7 @@ type UserLanguage struct {
 
 type UserLocation struct {
 	Area         string `json:"area,omitempty" bigquery:"area"`
-	BuildingId   string `json:"buildingId,omitempty" bigquery:"building_id"`
+	BuildingID   string `json:"buildingID,omitempty" bigquery:"building_id"`
 	CustomType   string `json:"customType,omitempty" bigquery:"custom_type"`
 	DeskCode     string `json:"deskCode,omitempty" bigquery:"desk_code"`
 	FloorName    string `json:"floorName,omitempty" bigquery:"floor_name"`
@@ -202,7 +202,7 @@ func (u *UsersRow) TableMetadata() *bigquery.TableMetadata {
 func (u *UsersRow) InsertID(jobID uuid.UUID) string {
 	return strings.Join([]string{
 		jobID.String(),
-		u.Id,
+		u.ID,
 	}, "-")
 }
 
@@ -218,7 +218,7 @@ func (u *UsersRow) UnmarshalUser(wu *workspace.User) (err error) {
 	u.ChangePasswordAtNextLogin = wu.ChangePasswordAtNextLogin
 	u.CreationTime = wu.CreationTime
 	u.CustomSchemas = ParseCustomSchemas(wu.CustomSchemas)
-	u.CustomerId = wu.CustomerId
+	u.CustomerID = wu.CustomerId
 	u.DeletionTime = wu.DeletionTime
 	emails, err := ParseUserEmails(wu.Emails)
 	if err != nil {
@@ -226,18 +226,18 @@ func (u *UsersRow) UnmarshalUser(wu *workspace.User) (err error) {
 	}
 	u.Emails = emails
 	u.Etag = wu.Etag
-	ids, err := ParseUserExternalIds(wu.ExternalIds)
+	ids, err := ParseUserExternalIDs(wu.ExternalIds)
 	if err != nil {
 		return err
 	}
-	u.ExternalIds = ids
+	u.ExternalIDs = ids
 	gender, err := ParseUserGender(wu.Gender)
 	if err != nil {
 		return err
 	}
 	u.Gender = gender
-	u.Id = wu.Id
-	u.IpWhitelisted = wu.IpWhitelisted
+	u.ID = wu.Id
+	u.IPWhitelisted = wu.IpWhitelisted
 	u.IsAdmin = wu.IsAdmin
 	u.IsDelegatedAdmin = wu.IsDelegatedAdmin
 	u.IsEnrolledIn2Sv = wu.IsEnrolledIn2Sv
@@ -289,7 +289,7 @@ func (u *UsersRow) UnmarshalUser(wu *workspace.User) (err error) {
 	u.Suspended = wu.Suspended
 	u.SuspensionReason = wu.SuspensionReason
 	u.ThumbnailPhotoEtag = wu.ThumbnailPhotoEtag
-	u.ThumbnailPhotoUrl = wu.ThumbnailPhotoUrl
+	u.ThumbnailPhotoURL = wu.ThumbnailPhotoUrl
 	websites, err := ParseUserWebsites(wu.Websites)
 	if err != nil {
 		return err
@@ -320,15 +320,15 @@ func ParseUserAddresses(data interface{}) ([]UserAddress, error) {
 	return list, nil
 }
 
-func ParseUserExternalIds(data interface{}) ([]UserExternalId, error) {
+func ParseUserExternalIDs(data interface{}) ([]UserExternalID, error) {
 	if data == nil {
 		return nil, nil
 	}
 	interfaces := data.([]interface{})
-	list := make([]UserExternalId, 0, len(interfaces))
+	list := make([]UserExternalID, 0, len(interfaces))
 	for _, face := range interfaces {
 		obj := face.(map[string]interface{})
-		var id UserExternalId
+		var id UserExternalID
 		enc, err := json.Marshal(obj)
 		if err != nil {
 			return nil, err

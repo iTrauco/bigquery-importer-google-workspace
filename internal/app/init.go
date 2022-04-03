@@ -46,7 +46,11 @@ func InitWorkspaceClient(
 	if err != nil {
 		return nil, fmt.Errorf("init Workspace Directory service: %w", err)
 	}
-	jwtConfig, err := google.JWTConfigFromJSON(secretVersion.Payload.Data, workspace.AdminDirectoryUserScope, workspace.AdminDirectoryGroupScope)
+	jwtConfig, err := google.JWTConfigFromJSON(
+		secretVersion.Payload.Data,
+		workspace.AdminDirectoryUserScope,
+		workspace.AdminDirectoryGroupScope,
+	)
 	if err != nil {
 		return nil, fmt.Errorf("init Workspace Directory service: %w", err)
 	}

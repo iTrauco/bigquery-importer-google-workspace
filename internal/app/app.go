@@ -40,9 +40,8 @@ func (a *App) exportGroups(ctx context.Context) (err error) {
 	}()
 	a.Logger.Info("exporting groups")
 	return a.WorkspaceClient.ListDomainGroups(ctx, func(ctx context.Context, groups ...*workspace.Group) error {
-		err := a.BigQueryJobClient.PutGroups(ctx, groups...)
-		if err != nil {
-			return nil
+		if err := a.BigQueryJobClient.PutGroups(ctx, groups...); err != nil {
+			return err
 		}
 		for _, group := range groups {
 			err := a.exportGroupMembers(ctx, group)

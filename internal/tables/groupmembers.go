@@ -12,8 +12,8 @@ import (
 // GroupMembersRow follows the structure of the WebAPI. See the official documentation for field descriptions:
 // https://developers.google.com/admin-sdk/directory/reference/rest/v1/members
 type GroupMembersRow struct {
-	Id               string `bigquery:"id"`
-	GroupId          string `bigquery:"group_id"`
+	ID               string `bigquery:"id"`
+	GroupID          string `bigquery:"group_id"`
 	GroupName        string `bigquery:"group_name"`
 	DeliverySettings string `bigquery:"delivery_settings"`
 	Email            string `bigquery:"email"`
@@ -52,13 +52,13 @@ func (g *GroupMembersRow) TableMetadata() *bigquery.TableMetadata {
 func (g *GroupMembersRow) InsertID(jobID uuid.UUID) string {
 	return strings.Join([]string{
 		jobID.String(),
-		g.Id,
-		g.GroupId,
+		g.ID,
+		g.GroupID,
 	}, "-")
 }
 
 func (g *GroupMembersRow) UnmarshalMember(wg *workspace.Member) {
-	g.Id = wg.Id
+	g.ID = wg.Id
 	g.DeliverySettings = wg.DeliverySettings
 	g.Email = wg.Email
 	g.Etag = wg.Etag

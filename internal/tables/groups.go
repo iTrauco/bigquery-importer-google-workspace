@@ -13,7 +13,7 @@ import (
 // https://developers.google.com/admin-sdk/directory/reference/rest/v1/groups
 type GroupsRow struct {
 	Org                string   `bigquery:"org"`
-	Id                 string   `bigquery:"id"`
+	ID                 string   `bigquery:"id"`
 	Email              string   `bigquery:"email"`
 	Name               string   `bigquery:"name"`
 	Description        string   `bigquery:"description"`
@@ -55,12 +55,12 @@ func (g *GroupsRow) TableMetadata() *bigquery.TableMetadata {
 func (g *GroupsRow) InsertID(jobID uuid.UUID) string {
 	return strings.Join([]string{
 		jobID.String(),
-		g.Id,
+		g.ID,
 	}, "-")
 }
 
 func (g *GroupsRow) UnmarshalGroup(wg *workspace.Group) {
-	g.Id = wg.Id
+	g.ID = wg.Id
 	g.Email = wg.Email
 	g.Name = wg.Name
 	g.Description = wg.Description

@@ -15,7 +15,10 @@ type WorkspaceClient struct {
 }
 
 // ListDomainGroups fetches all admin.Group in a domain and executes the provided function on them.
-func (c *WorkspaceClient) ListDomainGroups(ctx context.Context, put func(context.Context, ...*workspace.Group) error) (err error) {
+func (c *WorkspaceClient) ListDomainGroups(
+	ctx context.Context,
+	put func(context.Context, ...*workspace.Group) error,
+) (err error) {
 	defer func() {
 		if err != nil {
 			err = fmt.Errorf("list domain %s groups: %w", c.Config.Domain, err)
@@ -40,7 +43,10 @@ func (c *WorkspaceClient) ListDomainGroups(ctx context.Context, put func(context
 }
 
 // ListDomainUsers fetches all admin.User in a domain and executes the provided function on them.
-func (c *WorkspaceClient) ListDomainUsers(ctx context.Context, put func(context.Context, ...*workspace.User) error) (err error) {
+func (c *WorkspaceClient) ListDomainUsers(
+	ctx context.Context,
+	put func(context.Context, ...*workspace.User) error,
+) (err error) {
 	defer func() {
 		if err != nil {
 			err = fmt.Errorf("list domain %s users: %w", c.Config.Domain, err)
@@ -66,7 +72,11 @@ func (c *WorkspaceClient) ListDomainUsers(ctx context.Context, put func(context.
 }
 
 // ListGroupMembers fetches all admin.Member for the provided group and execute the provided function on them.
-func (c *WorkspaceClient) ListGroupMembers(ctx context.Context, group *workspace.Group, put func(context.Context, *workspace.Group, ...*workspace.Member) error) (err error) {
+func (c *WorkspaceClient) ListGroupMembers(
+	ctx context.Context,
+	group *workspace.Group,
+	put func(context.Context, *workspace.Group, ...*workspace.Member) error,
+) (err error) {
 	defer func() {
 		if err != nil {
 			err = fmt.Errorf("list member in group %s: %v", group.Id, err)

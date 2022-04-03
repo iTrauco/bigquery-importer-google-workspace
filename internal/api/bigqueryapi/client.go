@@ -84,8 +84,13 @@ func (c *JobClient) PutUsers(ctx context.Context, users ...*workspace.User) (err
 	return c.inserter(&tables.UsersRow{}).Put(ctx, valueSavers)
 }
 
-// PutGroupMembers takes a slice of admin.Group and admin.Member and inserts the members of the admin.Group into BigQuery
-func (c *JobClient) PutGroupMembers(ctx context.Context, group *workspace.Group, members ...*workspace.Member) (err error) {
+// PutGroupMembers takes a slice of admin.Group and admin.Member
+// and inserts the members of the admin.Group into BigQuery.
+func (c *JobClient) PutGroupMembers(
+	ctx context.Context,
+	group *workspace.Group,
+	members ...*workspace.Member,
+) (err error) {
 	defer func() {
 		if err != nil {
 			err = fmt.Errorf("put group members: %w", err)
@@ -97,7 +102,7 @@ func (c *JobClient) PutGroupMembers(ctx context.Context, group *workspace.Group,
 	valueSavers := make([]bigquery.ValueSaver, 0, len(members))
 	for _, member := range members {
 		row := tables.GroupMembersRow{
-			GroupId:   group.Id,
+			GroupID:   group.Id,
 			GroupName: group.Name,
 		}
 		row.UnmarshalMember(member)
