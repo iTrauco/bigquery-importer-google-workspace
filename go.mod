@@ -5,7 +5,7 @@ go 1.17
 require (
 	cloud.google.com/go v0.100.2
 	cloud.google.com/go/bigquery v1.30.2
-	cloud.google.com/go/secretmanager v1.3.0
+	cloud.google.com/go/secretmanager v1.4.0
 	github.com/blendle/zapdriver v1.3.1
 	github.com/google/uuid v1.3.0
 	github.com/google/wire v0.5.0
@@ -13,7 +13,7 @@ require (
 	go.uber.org/zap v1.21.0
 	golang.org/x/oauth2 v0.0.0-20220309155454-6242fa91716a
 	google.golang.org/api v0.74.0
-	google.golang.org/genproto v0.0.0-20220401170504-314d38edb7de
+	google.golang.org/genproto v0.0.0-20220405205423-9d709892a2bf
 )
 
 require (
