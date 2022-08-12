@@ -3,7 +3,7 @@ module github.com/einride/bigquery-importer-google-workspace
 go 1.17
 
 require (
-	cloud.google.com/go v0.102.1
+	cloud.google.com/go v0.103.0
 	cloud.google.com/go/bigquery v1.37.0
 	cloud.google.com/go/secretmanager v1.5.0
 	github.com/blendle/zapdriver v1.3.1
